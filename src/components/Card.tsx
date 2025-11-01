@@ -8,8 +8,13 @@ import {
     Typography,
 } from '@mui/material';
 import { formatDate } from '@utils/formatDate';
+import { TaskT } from '@models/tasks.types';
 
-const Card: FC = ({ task }: any): JSX.Element => {
+interface CardProps {
+    task: TaskT;
+}
+
+const Card: FC<CardProps> = ({ task }): JSX.Element => {
     const router = useRouter();
 
     const onDragStart = (event: DragEvent<HTMLDivElement>): void => {

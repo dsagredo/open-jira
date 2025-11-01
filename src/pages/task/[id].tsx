@@ -8,7 +8,7 @@ import {
     CardContent,
     CardHeader,
     Button,
-    Grid,
+    Box,
     TextField,
     FormControl,
     FormLabel,
@@ -23,10 +23,21 @@ import Layout from '@layouts/Layout';
 import { formatDate } from '@utils/formatDate';
 import { useSupabase } from '@store/context';
 import { createClient } from '@supabase/supabase-js';
+import { TaskT } from '@models/tasks.types';
 
 const validStatus = ['pending', 'in-progress', 'finished'];
 
-const TaskPage: FC = ({ task, toggleTheme, isTheme }) => {
+interface TaskPageProps {
+    task: TaskT;
+    toggleTheme: () => void;
+    isTheme: {
+        palette: {
+            mode: string;
+        };
+    };
+}
+
+const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
     const [inputValue, setInputValue] = useState(task.description);
     const [isStatus, setStatus] = useState(task.status);
     const [touched, setTouched] = useState(false);
@@ -42,7 +53,7 @@ const TaskPage: FC = ({ task, toggleTheme, isTheme }) => {
         setInputValue(event.target.value);
 
     const onStatusChanged = (event: ChangeEvent<HTMLInputElement>) =>
-        setStatus(event.target.value);
+        setStatus(event.target.value as TaskT['status']);
 
     const onSave = async () => {
         if (inputValue.trim().length === 0) return;
@@ -65,8 +76,8 @@ const TaskPage: FC = ({ task, toggleTheme, isTheme }) => {
             isTheme={isTheme}
         >
             <>
-                <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
-                    <Grid item xs={12} sm={8} md={6}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                    <Box sx={{ width: { xs: '100%', sm: '66%', md: '50%' } }}>
                         <Card>
                             <CardHeader
                                 title={`Entrada: ${inputValue}`}
@@ -120,8 +131,8 @@ const TaskPage: FC = ({ task, toggleTheme, isTheme }) => {
                                 </Button>
                             </CardActions>
                         </Card>
-                    </Grid>
-                </Grid>
+                    </Box>
+                </Box>
                 <IconButton
                     onClick={onDelete}
                     sx={{
