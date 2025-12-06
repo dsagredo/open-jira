@@ -1,38 +1,95 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Open Jira
 
-## Getting Started
+Aplicación de gestión de tareas construida con Next.js, Material-UI y Supabase.
 
-First, run the development server:
+## Características
+
+- Gestión completa de tareas (crear, editar, eliminar, completar)
+- Estados de tareas: pendiente, en progreso, terminada
+- Interfaz con temas claro y oscuro
+- Persistencia de datos con Supabase
+- Diseño responsivo con Material-UI
+- Vista detallada de cada tarea
+- Formato de fechas localizado
+
+## Tecnologías Utilizadas
+
+- **Next.js 15** - Framework de React
+- **TypeScript** - Tipado estático
+- **Material-UI (MUI)** - Componentes de interfaz
+- **Supabase** - Base de datos PostgreSQL
+- **Emotion** - CSS-in-JS
+- **date-fns** - Manejo de fechas
+- **notistack** - Notificaciones
+
+## Configuración Inicial
+
+1. Clona el repositorio
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Configura las variables de entorno:
+
+Crea un archivo `.env` basándote en `.env.template`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=tu_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_supabase_anon_key
+```
+
+4. La base de datos ya tiene las migraciones aplicadas en:
+   - `supabase/migrations/20251101212222_create_tasks_table.sql`
+   - `supabase/migrations/20251206163122_add_completed_column.sql`
+
+## Ejecutar el Proyecto
+
+Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Compilar para Producción
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run build
+npm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Estructura del Proyecto
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+src/
+├── components/       # Componentes reutilizables (Header, Card)
+├── layouts/          # Layouts de la aplicación
+├── lib/              # Configuración de Supabase
+├── models/           # Tipos TypeScript
+├── pages/            # Páginas de Next.js
+├── store/            # Context API (SupabaseContext)
+├── styles/           # Estilos CSS
+├── themes/           # Temas claro y oscuro
+├── ui/               # Componentes de UI (ListTask, NewTask)
+└── utils/            # Utilidades (formatDate)
+```
 
-## Learn More
+## Base de Datos
 
-To learn more about Next.js, take a look at the following resources:
+La aplicación utiliza Supabase con una tabla `tasks` que contiene:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `id` - UUID único
+- `description` - Descripción de la tarea
+- `status` - Estado (pending, in-progress, finished)
+- `completed` - Indicador booleano
+- `created_at` - Fecha de creación
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Scripts Disponibles
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Compila la aplicación para producción
+- `npm start` - Inicia el servidor de producción
+- `npm run lint` - Ejecuta el linter
