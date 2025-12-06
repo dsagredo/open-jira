@@ -15,7 +15,7 @@ interface ListTaskT {
     status: TaskStatus;
 }
 
-const ListTask: FC<ListTaskT> = ({ status }: ListTaskT) => {
+const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
     const supabase = useSupabase();
     const { tasks } = useTasks();
     const { enqueueSnackbar } = useSnackbar();
@@ -117,18 +117,21 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT) => {
             onDrop={onDrag}
             onDragOver={allowDrop}
             onDragLeave={onDragLeave}
-            className={draggingId ? styles.dragging : ''}
+            className={draggingId ? styles.dragging : styles.notDragging}
         >
             <Paper
                 sx={{
-                    height: 'calc(100vh - 180px)',
+                    height: 'calc(100vh - 80px)',
                     overflow: 'scroll',
                     backgroundColor: 'transparent',
                     padding: 2,
-                    border: isDraggingOver ? '2px dashed' : '2px solid transparent',
-                    borderColor: isDraggingOver ? 'primary.main' : 'transparent',
+                    border: isDraggingOver
+                        ? '1px dashed'
+                        : '1px solid transparent',
+                    borderColor: isDraggingOver
+                        ? 'primary.main'
+                        : 'transparent',
                     transition: 'all 0.3s ease',
-                    borderRadius: 3,
                     position: 'relative',
                     '&::after': isDraggingOver
                         ? {
@@ -137,7 +140,6 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT) => {
                               inset: 0,
                               backgroundColor: 'primary.main',
                               opacity: 0.05,
-                              borderRadius: 3,
                               pointerEvents: 'none',
                           }
                         : {},

@@ -20,7 +20,8 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
     const taskCounts = useMemo(() => {
         return {
             pending: tasks.filter((t) => t.status === 'pending').length,
-            'in-progress': tasks.filter((t) => t.status === 'in-progress').length,
+            'in-progress': tasks.filter((t) => t.status === 'in-progress')
+                .length,
             finished: tasks.filter((t) => t.status === 'finished').length,
         };
     }, [tasks]);
@@ -36,9 +37,8 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                     sx={{
                         width: '100%',
                         display: 'grid',
-                        height: 'calc(100vh - 120px)',
                         gridTemplateColumns:
-                            'repeat(auto-fill, minmax(min(320px, 100%), 1fr))',
+                            'repeat(auto-fill, minmax(min(398px, 100%), 1fr))',
                         gap: 3,
                     }}
                 >
@@ -63,8 +63,11 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                 />
                             }
                             sx={{
-                                background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+                                background:
+                                    'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
                                 color: 'white',
+                                borderTopLeftRadius: 16,
+                                borderTopRightRadius: 16,
                                 py: 2.5,
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -75,7 +78,8 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
-                                    background: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
+                                    background:
+                                        'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
                                     pointerEvents: 'none',
                                 },
                                 '& .MuiCardHeader-title': {
@@ -111,8 +115,11 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                 />
                             }
                             sx={{
-                                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                background:
+                                    'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                                 color: 'white',
+                                borderTopLeftRadius: 16,
+                                borderTopRightRadius: 16,
                                 py: 2.5,
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -123,7 +130,8 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
-                                    background: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
+                                    background:
+                                        'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
                                     pointerEvents: 'none',
                                 },
                                 '& .MuiCardHeader-title': {
@@ -158,8 +166,11 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                 />
                             }
                             sx={{
-                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                background:
+                                    'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                                 color: 'white',
+                                borderTopLeftRadius: 16,
+                                borderTopRightRadius: 16,
                                 py: 2.5,
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -170,7 +181,8 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
-                                    background: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
+                                    background:
+                                        'radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 50%)',
                                     pointerEvents: 'none',
                                 },
                                 '& .MuiCardHeader-title': {

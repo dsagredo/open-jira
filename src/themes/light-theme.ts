@@ -39,7 +39,8 @@ export const lightTheme = createTheme({
         },
     },
     typography: {
-        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontFamily:
+            '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         h6: {
             fontWeight: 700,
             letterSpacing: '-0.02em',
@@ -71,11 +72,11 @@ export const lightTheme = createTheme({
         MuiCard: {
             styleOverrides: {
                 root: {
-                    boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06)',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     border: '1px solid #f1f5f9',
                     '&:hover': {
-                        boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08)',
+                        boxShadow:
+                            '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08)',
                         transform: 'translateY(-2px)',
                     },
                 },

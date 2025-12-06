@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useContext, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, JSX, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -26,7 +26,11 @@ import { createClient } from '@supabase/supabase-js';
 import { TaskT } from '@models/tasks.types';
 import { useSnackbar } from 'notistack';
 
-const validStatus = ['pending', 'in-progress', 'finished'];
+const validStatus = [
+    { title: 'pendiente', status: 'pending' },
+    { title: 'en progreso', status: 'in-progress' },
+    { title: 'completado', status: 'finished' },
+];
 
 interface TaskPageProps {
     task: TaskT;
@@ -38,7 +42,11 @@ interface TaskPageProps {
     };
 }
 
-const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
+const TaskPage: FC<TaskPageProps> = ({
+    task,
+    toggleTheme,
+    isTheme,
+}: TaskPageProps): JSX.Element => {
     const [inputValue, setInputValue] = useState(task.description);
     const [isStatus, setStatus] = useState(task.status);
     const [touched, setTouched] = useState(false);
@@ -52,13 +60,13 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
         [inputValue, touched]
     );
 
-    const onInputValueChanged = (event: ChangeEvent<HTMLInputElement>) =>
+    const onInputValueChanged = (event: ChangeEvent<HTMLInputElement>): void =>
         setInputValue(event.target.value);
 
-    const onStatusChanged = (event: ChangeEvent<HTMLInputElement>) =>
+    const onStatusChanged = (event: ChangeEvent<HTMLInputElement>): void =>
         setStatus(event.target.value as TaskT['status']);
 
-    const onSave = async () => {
+    const onSave = async (): Promise<void> => {
         if (inputValue.trim().length === 0) return;
 
         try {
@@ -70,21 +78,30 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
 
             if (error) {
                 console.error('Error saving task:', error);
-                enqueueSnackbar('Error al guardar la tarea', { variant: 'error' });
+                enqueueSnackbar('Error al guardar la tarea', {
+                    variant: 'error',
+                });
             } else {
-                enqueueSnackbar('Tarea guardada correctamente', { variant: 'success' });
-                setTimeout(() => router.push('/'), 500);
+                enqueueSnackbar('Tarea guardada correctamente', {
+                    variant: 'success',
+                });
+                setTimeout((): Promise<boolean> => router.push('/'), 500);
             }
         } catch (error) {
             console.error('Unexpected error:', error);
-            enqueueSnackbar('Error inesperado al guardar', { variant: 'error' });
+            enqueueSnackbar('Error inesperado al guardar', {
+                variant: 'error',
+            });
         } finally {
             setIsSaving(false);
         }
     };
 
-    const onDelete = async () => {
-        const { error } = await supabase.from('tasks').delete().eq('id', task.id);
+    const onDelete = async (): Promise<void> => {
+        const { error } = await supabase
+            .from('tasks')
+            .delete()
+            .eq('id', task.id);
 
         if (error) {
             enqueueSnackbar('Error al eliminar la tarea', { variant: 'error' });
@@ -100,7 +117,15 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
             isTheme={isTheme}
         >
             <>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: 2,
+                        alignItems: 'center',
+                        height: 'calc(100vh - 80px)',
+                    }}
+                >
                     <Box sx={{ width: { xs: '100%', sm: '66%', md: '50%' } }}>
                         <Card>
                             <CardHeader
@@ -132,14 +157,21 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
                                         value={isStatus}
                                         onChange={onStatusChanged}
                                     >
-                                        {validStatus.map((option) => (
-                                            <FormControlLabel
-                                                key={option}
-                                                value={option}
-                                                control={<Radio />}
-                                                label={capitalize(option)}
-                                            />
-                                        ))}
+                                        {validStatus.map(
+                                            (option: {
+                                                status: string;
+                                                title: string;
+                                            }): JSX.Element => (
+                                                <FormControlLabel
+                                                    key={option.status}
+                                                    value={option.status}
+                                                    control={<Radio />}
+                                                    label={capitalize(
+                                                        option.title
+                                                    )}
+                                                />
+                                            )
+                                        )}
                                     </RadioGroup>
                                 </FormControl>
                             </CardContent>
@@ -149,9 +181,11 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
                                     variant="contained"
                                     fullWidth
                                     onClick={onSave}
-                                    disabled={inputValue.length <= 0 || isSaving}
+                                    disabled={
+                                        inputValue.length <= 0 || isSaving
+                                    }
                                 >
-                                    {isSaving ? 'Guardando...' : 'Save'}
+                                    {isSaving ? 'Guardando...' : 'Guardar'}
                                 </Button>
                             </CardActions>
                         </Card>
@@ -178,7 +212,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+        process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
     );
 
     const { data: task, error } = await supabase
