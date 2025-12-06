@@ -5,6 +5,7 @@ export type TaskT = {
     description: string;
     status: TaskStatus;
     created_at: string;
+    completed: boolean;
 };
 
 export type TaskState = {
