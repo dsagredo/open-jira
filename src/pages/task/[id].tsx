@@ -160,7 +160,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { data: task, error } = await supabase
         .from('tasks')
         .select('*')
-        .eq('id', id)
+        .eq('id', Number(id))
         .maybeSingle();
 
     if (error || !task) {

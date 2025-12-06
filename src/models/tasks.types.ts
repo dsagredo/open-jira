@@ -1,7 +1,7 @@
 export type TaskStatus = 'pending' | 'in-progress' | 'finished';
 
 export type TaskT = {
-    id: string;
+    id: number;
     description: string;
     status: TaskStatus;
     created_at: string;

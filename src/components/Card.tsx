@@ -18,7 +18,7 @@ const Card: FC<CardProps> = ({ task }): JSX.Element => {
     const router = useRouter();
 
     const onDragStart = (event: DragEvent<HTMLDivElement>): void => {
-        event.dataTransfer.setData('text', task.id);
+        event.dataTransfer.setData('text', String(task.id));
         event.currentTarget.style.opacity = '0.5';
         event.currentTarget.style.cursor = 'grabbing';
     };

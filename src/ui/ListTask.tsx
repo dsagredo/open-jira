@@ -50,7 +50,7 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT) => {
 
     const onDrag = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        const id = e.dataTransfer.getData('text');
+        const id = Number(e.dataTransfer.getData('text'));
         const task = tasks.find((t) => t.id === id);
         if (!task || task.status === status) return;
 
