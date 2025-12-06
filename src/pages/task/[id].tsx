@@ -24,6 +24,7 @@ import { formatDate } from '@utils/formatDate';
 import { useSupabase } from '@store/context';
 import { createClient } from '@supabase/supabase-js';
 import { TaskT } from '@models/tasks.types';
+import { useSnackbar } from 'notistack';
 
 const validStatus = ['pending', 'in-progress', 'finished'];
 
@@ -41,8 +42,10 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
     const [inputValue, setInputValue] = useState(task.description);
     const [isStatus, setStatus] = useState(task.status);
     const [touched, setTouched] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const router = useRouter();
     const supabase = useSupabase();
+    const { enqueueSnackbar } = useSnackbar();
 
     const isNotValid = useMemo(
         () => inputValue.length <= 0 && touched,
@@ -57,16 +60,36 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
 
     const onSave = async () => {
         if (inputValue.trim().length === 0) return;
-        await supabase
-            .from('tasks')
-            .update({ description: inputValue, status: isStatus })
-            .eq('id', task.id);
+
+        try {
+            setIsSaving(true);
+            const { error } = await supabase
+                .from('tasks')
+                .update({ description: inputValue, status: isStatus })
+                .eq('id', task.id);
+
+            if (error) {
+                console.error('Error saving task:', error);
+                enqueueSnackbar('Error al guardar la tarea', { variant: 'error' });
+            } else {
+                enqueueSnackbar('Tarea guardada correctamente', { variant: 'success' });
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            enqueueSnackbar('Error inesperado al guardar', { variant: 'error' });
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const onDelete = async () => {
-        await supabase.from('tasks').delete().eq('id', task.id);
+        const { error } = await supabase.from('tasks').delete().eq('id', task.id);
 
-        router.push('/');
+        if (error) {
+            enqueueSnackbar('Error al eliminar la tarea', { variant: 'error' });
+        } else {
+            router.push('/');
+        }
     };
 
     return (
@@ -125,9 +148,9 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
                                     variant="contained"
                                     fullWidth
                                     onClick={onSave}
-                                    disabled={inputValue.length <= 0}
+                                    disabled={inputValue.length <= 0 || isSaving}
                                 >
-                                    Save
+                                    {isSaving ? 'Guardando...' : 'Save'}
                                 </Button>
                             </CardActions>
                         </Card>
