@@ -4,6 +4,8 @@ import { darkTheme, lightTheme } from '@/themes';
 import { JSX, useEffect, useState } from 'react';
 import { SupabaseProvider } from '@store/context/SupabaseContext';
 import { SnackbarProvider } from 'notistack';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
     const [isTheme, setTheme] = useState(darkTheme);
@@ -24,14 +26,17 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     }, [isSelectedTheme]);
 
     return (
-        <SnackbarProvider maxSnack={3}>
-            <SupabaseProvider>
-                <Component
-                    {...pageProps}
-                    toggleTheme={toggleTheme}
-                    isTheme={isTheme}
-                />
-            </SupabaseProvider>
-        </SnackbarProvider>
+        <ThemeProvider theme={isTheme}>
+            <CssBaseline />
+            <SnackbarProvider maxSnack={3}>
+                <SupabaseProvider>
+                    <Component
+                        {...pageProps}
+                        toggleTheme={toggleTheme}
+                        isTheme={isTheme}
+                    />
+                </SupabaseProvider>
+            </SnackbarProvider>
+        </ThemeProvider>
     );
 }
