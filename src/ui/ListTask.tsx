@@ -52,12 +52,12 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT) => {
         e.preventDefault();
         const id = e.dataTransfer.getData('text');
         const task = tasks.find((t) => t.id === id);
-        if (!task) return;
+        if (!task || task.status === status) return;
 
         const { error } = await supabase
             .from('tasks')
             .update({ status })
-            .eq('id', task.id);
+            .eq('id', id);
 
         if (error) {
             enqueueSnackbar('Error al mover tarea', { variant: 'error' });
