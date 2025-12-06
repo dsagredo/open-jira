@@ -73,6 +73,7 @@ const TaskPage: FC<TaskPageProps> = ({ task, toggleTheme, isTheme }) => {
                 enqueueSnackbar('Error al guardar la tarea', { variant: 'error' });
             } else {
                 enqueueSnackbar('Tarea guardada correctamente', { variant: 'success' });
+                setTimeout(() => router.push('/'), 500);
             }
         } catch (error) {
             console.error('Unexpected error:', error);
