@@ -93,3 +93,9 @@ La aplicación utiliza Supabase con una tabla `tasks` que contiene:
 -   `npm run build` - Compila la aplicación para producción
 -   `npm start` - Inicia el servidor de producción
 -   `npm run lint` - Ejecuta el linter
+
+<img width="1366" height="768" alt="J4wbJtMEEfC4BgJCrBEAAw" src="https://github.com/user-attachments/assets/a3b19f74-f428-4794-907b-ce316be3bec0" />
+
+## Deploy en Vercel
+
+https://open-jira-eight.vercel.app
