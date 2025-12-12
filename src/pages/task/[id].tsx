@@ -119,6 +119,9 @@ const TaskPage: FC<TaskPageProps> = ({
         if (error) {
             enqueueSnackbar('Error al eliminar la tarea', { variant: 'error' });
         } else {
+            setTasks((prev: TaskT[]): TaskT[] =>
+                prev.filter((t: TaskT): boolean => t.id !== task.id)
+            );
             router.push('/');
         }
     };

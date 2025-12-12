@@ -3,11 +3,13 @@ import { Box, Button, TextField, Collapse, IconButton } from '@mui/material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import { useSupabase } from '@store/context';
+import { useSupabase, useTasks } from '@store/context';
 import { useSnackbar } from 'notistack';
+import { TaskT } from '@models/tasks.types';
 
 const NewTask = (): JSX.Element => {
     const supabase = useSupabase();
+    const { tasks, setTasks } = useTasks();
     const { enqueueSnackbar } = useSnackbar();
 
     const [inputValue, setInputValue] = useState('');
@@ -26,11 +28,17 @@ const NewTask = (): JSX.Element => {
 
         setIsLoading(true);
         try {
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('tasks')
-                .insert([{ description: inputValue, status: 'pending' }]);
+                .insert([{ description: inputValue, status: 'pending' }])
+                .select()
+                .single();
 
             if (error) throw error;
+
+            if (data && !tasks.some((t: TaskT): boolean => t.id === data.id)) {
+                setTasks((prev: TaskT[]): TaskT[] => [...prev, data]);
+            }
 
             setInputValue('');
             setIsAdding(false);
@@ -47,13 +55,13 @@ const NewTask = (): JSX.Element => {
         }
     };
 
-    const handleCancel = () => {
+    const handleCancel = (): void => {
         setIsAdding(false);
         setInputValue('');
         setTouched(false);
     };
 
-    const handleKeyPress = (event: React.KeyboardEvent) => {
+    const handleKeyPress = (event: React.KeyboardEvent): void => {
         if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
             onSave();
         }
@@ -72,7 +80,13 @@ const NewTask = (): JSX.Element => {
                         borderColor: 'divider',
                     }}
                 >
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            mb: 1,
+                        }}
+                    >
                         <IconButton
                             size="small"
                             onClick={handleCancel}
@@ -110,7 +124,11 @@ const NewTask = (): JSX.Element => {
                         onKeyDown={handleKeyPress}
                         disabled={isLoading}
                     />
-                    <Box display="flex" justifyContent="space-between" gap={1.5}>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        gap={1.5}
+                    >
                         <Button
                             variant="outlined"
                             onClick={handleCancel}
@@ -143,7 +161,8 @@ const NewTask = (): JSX.Element => {
                         py: 1.75,
                         fontWeight: 700,
                         fontSize: '0.95rem',
-                        background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+                        background:
+                            'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
                         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                         '&:hover': {
                             boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.15)',
