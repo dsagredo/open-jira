@@ -33,11 +33,12 @@ npm install
 
 3. Configura las variables de entorno:
 
-Crea un archivo `.env` basándote en `.env.template`:
+Crea un archivo `.env.local` basándote en `.env.template`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=tu_supabase_url
-NEXT_PUBLIC_SUPABASE_KEY=tu_supabase_anon_key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=tu_supabase_publishable_key
+NEXT_PUBLIC_SUPABASE_KEY=tu_supabase_key
 ```
 
 4. La base de datos ya tiene las migraciones aplicadas en:
