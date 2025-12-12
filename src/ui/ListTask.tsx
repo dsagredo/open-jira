@@ -17,7 +17,7 @@ interface ListTaskT {
 
 const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
     const supabase = useSupabase();
-    const { tasks } = useTasks();
+    const { tasks, setTasks } = useTasks();
     const { enqueueSnackbar } = useSnackbar();
     const [draggingId, setDraggingId] = useState<number | null>(null);
     const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -25,7 +25,9 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
     useEffect(() => {
         const onNativeDragStart = (e: globalThis.DragEvent) => {
             try {
-                const idStr = e.dataTransfer?.getData('text');
+                const idStr =
+                    e.dataTransfer?.getData('text/plain') ||
+                    e.dataTransfer?.getData('text');
                 setDraggingId(idStr ? Number(idStr) : null);
             } catch {
                 setDraggingId(null);
@@ -49,6 +51,7 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
 
     const allowDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
         setIsDraggingOver(true);
     };
 
@@ -59,7 +62,11 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
     const onDrag = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDraggingOver(false);
-        const id = Number(e.dataTransfer.getData('text'));
+        const raw =
+            e.dataTransfer?.getData('text/plain') ||
+            e.dataTransfer?.getData('text') ||
+            '';
+        const id = Number(raw);
         const task = tasks.find((t) => t.id === id);
         if (!task || task.status === status) return;
 
@@ -72,6 +79,10 @@ const ListTask: FC<ListTaskT> = ({ status }: ListTaskT): JSX.Element => {
             enqueueSnackbar('Error al mover tarea', { variant: 'error' });
             return;
         }
+
+        setTasks((prev) =>
+            prev.map((t) => (t.id === id ? { ...t, status } : t))
+        );
 
         enqueueSnackbar('Tarea movida', {
             variant: 'success',

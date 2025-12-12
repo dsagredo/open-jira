@@ -21,7 +21,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Layout from '@layouts/Layout';
 import { formatDate } from '@utils/formatDate';
-import { useSupabase } from '@store/context';
+import { useSupabase, useTasks } from '@store/context';
 import { createClient } from '@supabase/supabase-js';
 import { TaskT } from '@models/tasks.types';
 import { useSnackbar } from 'notistack';
@@ -53,6 +53,7 @@ const TaskPage: FC<TaskPageProps> = ({
     const [isSaving, setIsSaving] = useState(false);
     const router = useRouter();
     const supabase = useSupabase();
+    const { tasks, setTasks } = useTasks();
     const { enqueueSnackbar } = useSnackbar();
 
     const isNotValid = useMemo(
@@ -77,11 +78,23 @@ const TaskPage: FC<TaskPageProps> = ({
                 .eq('id', task.id);
 
             if (error) {
-                console.error('Error saving task:', error);
                 enqueueSnackbar('Error al guardar la tarea', {
                     variant: 'error',
                 });
             } else {
+                setTasks((prev: TaskT[]): TaskT[] =>
+                    prev.map(
+                        (t: TaskT): TaskT =>
+                            t.id === task.id
+                                ? {
+                                      ...t,
+                                      description: inputValue,
+                                      status: isStatus,
+                                  }
+                                : t
+                    )
+                );
+
                 enqueueSnackbar('Tarea guardada correctamente', {
                     variant: 'success',
                 });

@@ -21,7 +21,9 @@ const Card: FC<CardProps> = ({ task }): JSX.Element => {
     const [isDragging, setIsDragging] = useState(false);
 
     const onDragStart = (event: DragEvent<HTMLDivElement>): void => {
+        event.dataTransfer.setData('text/plain', String(task.id));
         event.dataTransfer.setData('text', String(task.id));
+        event.dataTransfer.effectAllowed = 'move';
         setIsDragging(true);
     };
 
@@ -29,7 +31,10 @@ const Card: FC<CardProps> = ({ task }): JSX.Element => {
         setIsDragging(false);
     };
 
-    const onClick = (): Promise<boolean> => router.push(`/task/${task.id}`);
+    const onClick = (): Promise<boolean> => {
+        if (isDragging) return Promise.resolve(false);
+        return router.push(`/task/${task.id}`);
+    };
 
     const getStatusColor = () => {
         switch (task.status) {
