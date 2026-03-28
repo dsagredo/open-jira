@@ -34,19 +34,9 @@ const validStatus = [
 
 interface TaskPageProps {
     task: TaskT;
-    toggleTheme: () => void;
-    isTheme: {
-        palette: {
-            mode: string;
-        };
-    };
 }
 
-const TaskPage: FC<TaskPageProps> = ({
-    task,
-    toggleTheme,
-    isTheme,
-}: TaskPageProps): JSX.Element => {
+const TaskPage: FC<TaskPageProps> = ({ task }: TaskPageProps): JSX.Element => {
     const [inputValue, setInputValue] = useState(task.description);
     const [isStatus, setStatus] = useState(task.status);
     const [touched, setTouched] = useState(false);
@@ -58,7 +48,7 @@ const TaskPage: FC<TaskPageProps> = ({
 
     const isNotValid = useMemo(
         () => inputValue.length <= 0 && touched,
-        [inputValue, touched]
+        [inputValue, touched],
     );
 
     const onInputValueChanged = (event: ChangeEvent<HTMLInputElement>): void =>
@@ -91,8 +81,8 @@ const TaskPage: FC<TaskPageProps> = ({
                                       description: inputValue,
                                       status: isStatus,
                                   }
-                                : t
-                    )
+                                : t,
+                    ),
                 );
 
                 enqueueSnackbar('Tarea guardada correctamente', {
@@ -120,18 +110,14 @@ const TaskPage: FC<TaskPageProps> = ({
             enqueueSnackbar('Error al eliminar la tarea', { variant: 'error' });
         } else {
             setTasks((prev: TaskT[]): TaskT[] =>
-                prev.filter((t: TaskT): boolean => t.id !== task.id)
+                prev.filter((t: TaskT): boolean => t.id !== task.id),
             );
             router.push('/');
         }
     };
 
     return (
-        <Layout
-            title={inputValue.substring(0, 20) + '...'}
-            toggleTheme={toggleTheme}
-            isTheme={isTheme}
-        >
+        <Layout title={inputValue.substring(0, 20) + '...'}>
             <>
                 <Box
                     sx={{
@@ -147,7 +133,7 @@ const TaskPage: FC<TaskPageProps> = ({
                             <CardHeader
                                 title={`Entrada: ${inputValue}`}
                                 subheader={`Creada ${formatDate(
-                                    task.created_at
+                                    task.created_at,
                                 )}`}
                             />
                             <CardContent>
@@ -183,10 +169,10 @@ const TaskPage: FC<TaskPageProps> = ({
                                                     value={option.status}
                                                     control={<Radio />}
                                                     label={capitalize(
-                                                        option.title
+                                                        option.title,
                                                     )}
                                                 />
-                                            )
+                                            ),
                                         )}
                                     </RadioGroup>
                                 </FormControl>
@@ -228,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
+        process.env.NEXT_PUBLIC_SUPABASE_KEY || '',
     );
 
     const { data: task, error } = await supabase
