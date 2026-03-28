@@ -6,15 +6,10 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { JSX } from 'react';
 
 interface HeaderT {
-    toggleTheme?: () => void;
-    isTheme?: {
-        palette: {
-            mode: string;
-        };
-    };
+    // Ninguna prop necesaria en modo fijo dark
 }
 
-export default function Header({ toggleTheme, isTheme }: HeaderT) {
+export default function Header() {
     return (
         <AppBar position="sticky">
             <Toolbar sx={{ py: 1 }}>
@@ -49,22 +44,6 @@ export default function Header({ toggleTheme, isTheme }: HeaderT) {
                                 OpenJira
                             </Typography>
                         </Link>
-                    </Grid>
-
-                    <Grid>
-                        <IconButton
-                            onClick={toggleTheme}
-                            sx={{
-                                bgcolor: 'action.hover',
-                                '&:hover': { bgcolor: 'action.selected' },
-                            }}
-                        >
-                            {isTheme?.palette.mode === 'dark' ? (
-                                <Brightness7Icon />
-                            ) : (
-                                <Brightness4Icon />
-                            )}
-                        </IconButton>
                     </Grid>
                 </Grid>
             </Toolbar>

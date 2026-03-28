@@ -6,15 +6,10 @@ import ListTask from '@ui/ListTask';
 import { useTasks } from '@store/context/SupabaseContext';
 
 interface HomeT {
-    toggleTheme: () => void;
-    isTheme: {
-        palette: {
-            mode: string;
-        };
-    };
+    // No es necesario toggleTheme ni isTheme en modo oscuro fijo
 }
 
-export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
+export default function Home(): JSX.Element {
     const { tasks } = useTasks();
 
     const taskCounts = useMemo(() => {
@@ -27,11 +22,7 @@ export default function Home({ toggleTheme, isTheme }: HomeT): JSX.Element {
     }, [tasks]);
 
     return (
-        <Layout
-            title="Home - OpenJira"
-            toggleTheme={toggleTheme}
-            isTheme={isTheme}
-        >
+        <Layout title="Home - OpenJira">
             <Grid container spacing={3} sx={{ padding: 3 }}>
                 <Box
                     sx={{

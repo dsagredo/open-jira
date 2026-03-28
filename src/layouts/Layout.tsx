@@ -5,19 +5,11 @@ import Header from '@components/Header';
 
 interface LayoutT {
     title?: string;
-    toggleTheme?: () => void;
-    isTheme?: {
-        palette: {
-            mode: string;
-        };
-    };
     children: JSX.Element;
 }
 
 const Layout: FC<LayoutT> = ({
     title = 'OpenJira',
-    toggleTheme,
-    isTheme,
     children,
 }: LayoutT): JSX.Element => {
     return (
@@ -25,7 +17,7 @@ const Layout: FC<LayoutT> = ({
             <Head>
                 <title>{title}</title>
             </Head>
-            <Header toggleTheme={toggleTheme} isTheme={isTheme} />
+            <Header />
             <Box>{children}</Box>
         </Box>
     );
