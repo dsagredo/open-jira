@@ -5,7 +5,7 @@ import { createSprint } from '@/app/actions/sprint';
 import { useSnackbar } from 'notistack';
 import { JSX } from 'react';
 
-interface CreateSprintButtonProps {
+interface CreateSprintButtonT {
     disabled: boolean;
     onCreated: () => Promise<void>;
 }
@@ -13,7 +13,7 @@ interface CreateSprintButtonProps {
 export default function CreateSprintButton({
     disabled,
     onCreated,
-}): JSX.Element {
+}: CreateSprintButtonT): JSX.Element {
     const router = useRouter();
 
     const { enqueueSnackbar } = useSnackbar();
