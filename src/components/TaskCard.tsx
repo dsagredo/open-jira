@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, JSX, useState } from 'react';
+import { FC, JSX, useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { Pencil, Trash2 } from 'lucide-react';
 import { CSS } from '@dnd-kit/utilities';
@@ -22,6 +22,7 @@ const TaskCard: FC<TaskCardT> = ({
     onDeleted,
 }: TaskCardT): JSX.Element => {
     const [openEdit, setOpenEdit] = useState(false);
+    const [date, setDate] = useState('');
     const { enqueueSnackbar } = useSnackbar();
 
     const {
@@ -74,6 +75,10 @@ const TaskCard: FC<TaskCardT> = ({
         }
     };
 
+    useEffect(() => {
+        setDate(new Date(task.createdAt).toLocaleDateString('es-CL'));
+    }, [task.createdAt]);
+
     return (
         <article
             suppressHydrationWarning
@@ -94,7 +99,7 @@ const TaskCard: FC<TaskCardT> = ({
                     </p>
 
                     <div className="mt-3 text-xs text-gray-400 dark:text-gray-500">
-                        {formatDate(task.createdAt)}
+                        {date}
                     </div>
                 </div>
                 <div>
