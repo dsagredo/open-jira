@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 
 const globalForPrisma = global as unknown as {
-    prisma: PrismaClient;
+    prisma: PrismaClient | undefined;
 };
 
 const adapter = new PrismaNeon({
@@ -10,7 +10,7 @@ const adapter = new PrismaNeon({
 });
 
 export const prisma =
-    globalForPrisma.prisma ||
+    globalForPrisma.prisma ??
     new PrismaClient({
         adapter,
     });
