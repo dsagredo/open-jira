@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, JSX, useState } from 'react';
+import { FC, JSX, useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { Pencil, Trash2 } from 'lucide-react';
 import { CSS } from '@dnd-kit/utilities';
