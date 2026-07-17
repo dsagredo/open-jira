@@ -1,9 +1,0 @@
-.notDragging {
-    padding: 10px;
-}
-
-.dragging {
-    background-color: rgba(250, 250, 250, 0.2);
-    border-radius: 10px;
-    border: 1px dashed white;
-}
